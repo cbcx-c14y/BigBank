@@ -1,9 +1,10 @@
 //SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
-contract Bank {
+import "./IBank.sol";
+contract Bank is IBank {
     // 管理员
-    address private immutable admin;
+    address public immutable admin;
     // 地址存储map映射
     mapping(address => uint) public balances;
     // 前三
@@ -24,7 +25,7 @@ contract Bank {
         _;
     }
 
-    function withdraw(uint amount) public onlyAdmin {
+    function withdraw(uint amount) public override onlyAdmin {
         if (amount > address(this).balance) {
             revert NotEnoughBalance();
         }
@@ -59,7 +60,7 @@ contract Bank {
         }
     }
 
-    function getTopThree() public view returns (address[3] memory) {
+    function getTopThree() public view override returns (address[3] memory) {
         return topThreeUsers;
     }
 
